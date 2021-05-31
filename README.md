@@ -3,3 +3,7 @@
 I want better understand vanilla Javascript methods and its magic.
 
 - https://carlpaton.github.io/2021/05/js-methods/
+
+## Games
+
+- [Tetris](./src/tetris)
