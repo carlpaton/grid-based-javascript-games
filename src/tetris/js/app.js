@@ -4,8 +4,10 @@ document.addEventListener('DOMContentLoaded', () =>{
     const startButton = document.querySelector('#start-button');
     const width = 10;
     const displayWidth = 4;
-    let displayIndex = 0;
+    const displayIndex = 0;
     let nextRandom = 0;
+    let score = 0;
+    let timerId
     
     let squares = Array.from(document.querySelectorAll('.grid div'));
     let displaySquares = Array.from(document.querySelectorAll('.mini-grid div'));
@@ -83,8 +85,6 @@ document.addEventListener('DOMContentLoaded', () =>{
         });
     };
 
-    timerId = setInterval(moveDown, 1000);
-
     function control(e) {
         if (e.keyCode === 37) { 
             moveLeft()
@@ -113,16 +113,13 @@ document.addEventListener('DOMContentLoaded', () =>{
             // let a new tetromino fall
             random = nextRandom;
             nextRandom = Math.floor(Math.random() * theTetrominoes.length);
-            console.log('random = ' + random); 
-            console.log('currentRotation = ' + currentRotation); 
-
             current = theTetrominoes[random][currentRotation];
-            console.log('current = ' + current);
-            console.log('currentPosition = ' + currentPosition);
             currentPosition = 4;
 
             draw();
             displayShape();
+            addScore();
+            gameOver();
         }
     }
 
@@ -170,5 +167,43 @@ document.addEventListener('DOMContentLoaded', () =>{
          upNextTetrominoes[nextRandom].forEach(index => {
              displaySquares[displayIndex + index].classList.add('tetromino');
          });
+     }
+
+     startButton.addEventListener('click', () => {
+        if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+        } else {
+            draw();
+            timerId = setInterval(moveDown, 1000);
+            nextRandom = Math.floor(Math.random()*theTetrominoes.length);
+            displayShape();
+        }
+     });
+
+     function addScore() {
+         for (let i = 0; i < 199; i += width) {
+            const row = [i, i+1, i+2, i+3, i+4, i+5, i+6, i+7, i+8, i+9];
+
+            if (row.every(index => squares[index].classList.contains('taken'))) {
+                score += 10;
+                scoreDisplay.innerHTML = score;
+                row.forEach(index => {
+                    squares[index].classList.remove('taken');
+                    squares[index].classList.remove('tetromino');
+                })
+            }
+            // const squaresRemoved = squares.splice(i, width);
+            // console.log(squaresRemoved);
+            // squares = squaresRemoved.concat(squares);
+            // squares.forEach(cell => grid.appendChild(cell));
+         }
+     }
+
+     function gameOver() {
+         if (current.some(index => squares[currentPosition + index].classList.contains('taken'))) {
+             scoreDisplay.innerHTML = 'Game over';
+             clearInterval(timerId);
+         }
      }
 })
