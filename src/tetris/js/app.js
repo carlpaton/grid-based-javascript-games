@@ -194,12 +194,12 @@ document.addEventListener('DOMContentLoaded', () =>{
                     squares[index].classList.remove('taken');
                     squares[index].classList.remove('tetromino');
                 })
+
+                const squaresRemoved = squares.splice(i, width);
+                squares = squaresRemoved.concat(squares);
+                squares.forEach(cell => grid.appendChild(cell));
             }
-            // const squaresRemoved = squares.splice(i, width);
-            // console.log(squaresRemoved);
-            // squares = squaresRemoved.concat(squares);
-            // squares.forEach(cell => grid.appendChild(cell));
-         }
+        }
      }
 
      function gameOver() {
@@ -213,16 +213,16 @@ document.addEventListener('DOMContentLoaded', () =>{
          // first 200 squares
         for (let i = 0; i < 200; i += 1) {
             var square = document.createElement('div');
-            const text = document.createTextNode(i);
-            square.appendChild(text);
-            grid.appendChild(square);   
-        }   
+            // const text = document.createTextNode(i);
+            // square.appendChild(text);
+            grid.appendChild(square);
+        }
 
         // taken squares
         for (let i = 0; i < 10; i += 1) {
             var square = document.createElement('div');
             square.className = "taken";
-            grid.appendChild(square);   
-        }         
+            grid.appendChild(square);
+        }
      }
 })
