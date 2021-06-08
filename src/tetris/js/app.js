@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', () =>{
     let score = 0;
     let timerId
     
+    drawGrid();
+    
     let squares = Array.from(document.querySelectorAll('.grid div'));
     let displaySquares = Array.from(document.querySelectorAll('.mini-grid div'));
 
@@ -205,5 +207,22 @@ document.addEventListener('DOMContentLoaded', () =>{
              scoreDisplay.innerHTML = 'Game over';
              clearInterval(timerId);
          }
+     }
+
+     function drawGrid() {
+         // first 200 squares
+        for (let i = 0; i < 200; i += 1) {
+            var square = document.createElement('div');
+            const text = document.createTextNode(i);
+            square.appendChild(text);
+            grid.appendChild(square);   
+        }   
+
+        // taken squares
+        for (let i = 0; i < 10; i += 1) {
+            var square = document.createElement('div');
+            square.className = "taken";
+            grid.appendChild(square);   
+        }         
      }
 })
